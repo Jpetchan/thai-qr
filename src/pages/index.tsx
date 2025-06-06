@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { generateQR } from '@/actions/generateQR';
 import { updateJsonBin } from '@/utils/jsonbin';
 import Head from 'next/head';
+import Image from 'next/image';
+import { JsonBinResponse } from '@/interfaces/jsonbin';
 
 export default function Home() {
   const [mobile, setMobile] = useState('');
@@ -52,12 +54,16 @@ export default function Home() {
           cache: 'no-store',
         },
       );
-      const binJson = await binRes.json();
+      const binJson = (await binRes.json()) as JsonBinResponse;
       const currentCount = binJson.record.counter || 0;
       await updateJsonBin({ counter: currentCount + 1 });
       setCount(currentCount + 1);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 
@@ -122,7 +128,13 @@ export default function Home() {
           {qr && (
             <div className="mt-4 space-y-3">
               <div className="p-4 bg-white rounded-xl shadow-lg">
-                <img src={qr} alt="QR Code" className="w-full" />
+                <Image
+                  src={qr}
+                  alt="QR Code"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
               <a
                 href={qr}

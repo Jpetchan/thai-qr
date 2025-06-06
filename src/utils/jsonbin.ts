@@ -1,7 +1,9 @@
+import { JsonBinData } from '@/interfaces/jsonbin';
+
 const BIN_ID = '684233858a456b7966aa01e1';
 const API_KEY = process.env.NEXT_PUBLIC_JSONBIN_API_KEY!;
 
-export async function updateJsonBin(newData: any) {
+export async function updateJsonBin(newData: JsonBinData) {
   const url = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
   const res = await fetch(url, {
