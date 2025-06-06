@@ -55,6 +55,7 @@ export default function Home() {
         },
       );
       const binJson = (await binRes.json()) as JsonBinResponse;
+      console.log(binJson);
       const currentCount = binJson.record.counter || 0;
       await updateJsonBin({ counter: currentCount + 1 });
       setCount(currentCount + 1);
@@ -127,7 +128,7 @@ export default function Home() {
           </form>
           {qr && (
             <div className="mt-4 space-y-3">
-              <div className="p-4 bg-white rounded-xl shadow-lg">
+              <div className="p-4 bg-white rounded-xl shadow-lg relative aspect-square">
                 <Image
                   src={qr}
                   alt="QR Code"
